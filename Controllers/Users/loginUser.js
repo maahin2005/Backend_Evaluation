@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const UserModel = require("../Models/User");
+const UserModel = require("../../Models/User");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
@@ -19,7 +19,10 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid PAssword" });
     }
 
-    const token = jwt.sign({ userID: user._id }, process.env.SECRET_KEY);
+    const token = jwt.sign(
+      { userID: user._id, username: user.username },
+      process.env.SECRET_KEY
+    );
 
     res.status(200).json({ message: "User Login Successfully", user, token });
   } catch (error) {
