@@ -11,8 +11,14 @@ const authUser = (req, res, next) => {
   try {
     const decodedMSG = jwt.verify(token, process.env.SECRET_KEY);
 
+    if (!decodedMSG) {
+      res
+        .status(401)
+        .json({ msg: "You are not authorized to access this page" });
+    }
+
     req.body.userID = decodedMSG.userID;
-    req.body.username = decodedMSG.username;
+    req.body.author = decodedMSG.username;
 
     next();
   } catch (error) {
